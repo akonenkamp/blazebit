@@ -13,6 +13,7 @@ public class SessionApiController {
 
 @PostMapping("/new") 
 public User create (@RequestBody User user) {
+	return user;
 	
 }
 
