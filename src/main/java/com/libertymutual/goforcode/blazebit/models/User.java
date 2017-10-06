@@ -5,23 +5,26 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "blazebit_user")
 public class User {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
-	
-	@Column(unique= true, nullable = false) 
+
+	@Column(unique = true, nullable = false)
 	private String username;
-	
-	@Column (nullable=false)
+
+	@Column(nullable = false)
 	private String password;
-	
-	public User () {}
-	
-	public User (String username, String password) {
+
+	public User() {
+	}
+
+	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
 	}

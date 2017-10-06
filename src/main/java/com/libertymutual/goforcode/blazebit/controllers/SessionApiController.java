@@ -7,17 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.libertymutual.goforcode.blazebit.models.User;
 
-@Controller 
+@Controller
 @RequestMapping("/session")
 public class SessionApiController {
 
-@PostMapping("/new") 
-public User create (@RequestBody User user) {
-	return user;
-	
-}
+	@PostMapping("/new")
+	public User create(@RequestBody User user) {
+		return user;
 
-	
-
+	}
 
 }
