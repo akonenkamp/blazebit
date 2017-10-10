@@ -36,11 +36,19 @@ public class User implements UserDetails {
 	private String encryptedPassword;
 
 	public User() {
+		this.username = "";
+	}
+	
+	public User(User user) {
+		this.id = user.id;
+		this.username = user.username;
+		this.encryptedPassword = encryptedPassword;
+		this.password = password;
 	}
 
-	public User(String username, String password) {
+	public User(String username, String encryptedPassword) {
 		this.username = username;
-		this.password = password;
+		this.encryptedPassword = encryptedPassword;
 	}
 
 	public Long getId() {

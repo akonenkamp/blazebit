@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.authorizeRequests()
-				.antMatchers(HttpMethod.GET, "/swagger-ui.html", "/users/new", "/session/new", "/img/**", "/app/**", "/css/**", "/js/**")
+				.antMatchers(HttpMethod.GET, "/users/new", "/session/new", "/img/**", "/app/**", "/css/**", "/js/**")
 				.permitAll()
 				.antMatchers(HttpMethod.POST, "/users", "/api/users/new", "/session/mine").permitAll()
 				.antMatchers(HttpMethod.PUT, "/api/session/mine").permitAll()
@@ -44,10 +44,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest().authenticated()
 				.and()
 				.formLogin()
-				.loginPage("/session/new")
+				.loginPage("/api/session/mine")
 				.usernameParameter("username")
 				.passwordParameter("password")
-				.loginProcessingUrl("/session/mine")
+				.loginProcessingUrl("/api/session/mine")
 				.and()
 				.addFilterAfter(new CsrfIntoCookieFilter(), CsrfFilter.class)
 				.csrf()
