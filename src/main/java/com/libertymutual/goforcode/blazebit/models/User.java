@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -42,13 +43,15 @@ public class User implements UserDetails {
 	public User(User user) {
 		this.id = user.id;
 		this.username = user.username;
-		this.encryptedPassword = encryptedPassword;
-		this.password = password;
+		this.encryptedPassword = user.encryptedPassword;
+		this.password = user.password;
+		
 	}
 
 	public User(String username, String encryptedPassword) {
 		this.username = username;
 		this.encryptedPassword = encryptedPassword;
+		
 	}
 
 	public Long getId() {
@@ -68,17 +71,16 @@ public class User implements UserDetails {
 	}
 
 	public String getPassword() {
-		return password;
+		return encryptedPassword;
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.encryptedPassword = password;
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+		return AuthorityUtils.commaSeparatedStringToAuthorityList("USER");
 	}
 
 	@Override

@@ -25,11 +25,11 @@ import com.libertymutual.goforcode.blazebit.services.BlazebitUserDetailsService;
 
 public class SessionApiController {
 
-	private BlazebitUserDetailsService userDetails;
+	private UserDetailsService userDetails;
 
 	private AuthenticationManager authenticator;
 
-	public SessionApiController (BlazebitUserDetailsService userDetails, AuthenticationManager authenticator) {
+	public SessionApiController (UserDetailsService userDetails, AuthenticationManager authenticator) {
 
 		this.userDetails = userDetails;
 
@@ -45,7 +45,6 @@ public class SessionApiController {
 
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(details,
 				credentials.password, details.getAuthorities());
-
 		authenticator.authenticate(token);
 
 		if (token.isAuthenticated()) {
