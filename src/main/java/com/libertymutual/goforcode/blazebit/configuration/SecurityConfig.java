@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.authorizeRequests()
-				.antMatchers(HttpMethod.GET, "/users/new", "/session/new", "/img/**", "/app/**", "/css/**", "/js/**")
+				.antMatchers(HttpMethod.GET, "/api/ping", "/users/new", "/session/new", "/img/**", "/app/**", "/css/**", "/js/**")
 				.permitAll()
 				.antMatchers(HttpMethod.POST, "/users", "/api/users/new", "/session/mine").permitAll()
 				.antMatchers(HttpMethod.PUT, "/api/session/mine").permitAll()
@@ -51,8 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				.addFilterAfter(new CsrfIntoCookieFilter(), CsrfFilter.class)
 			// remove the .disable() and then uncomment the csrfTokenRepository line to implement csrf checking
-				.csrf().disable();
-//				.csrfTokenRepository(tokenRepository());
+				.csrf()
+				.csrfTokenRepository(tokenRepository());
 				
 				}
 
