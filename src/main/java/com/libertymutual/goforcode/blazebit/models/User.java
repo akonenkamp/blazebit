@@ -36,6 +36,10 @@ public class User implements UserDetails {
 	@JsonProperty (access = Access.WRITE_ONLY)
 	private String encryptedPassword;
 
+	private Double totalDistance;
+	private Long totalElevation;
+	
+
 	public User() {
 		this.username = "";
 	}
@@ -113,6 +117,22 @@ public class User implements UserDetails {
 
 	public void setEncryptedPassword(String encryptedPassword) {
 		this.encryptedPassword = encryptedPassword;
+	}
+
+	public Double getTotalMiles() {
+		return totalDistance;
+	}
+
+	public void setTotalMiles(Double totalMiles) {
+		this.totalDistance = totalMiles;
+	}
+
+	public Long getTotalElevation() {
+		return totalElevation;
+	}
+
+	public void setTotalElevation(Long totalElevation) {
+		this.totalElevation = totalElevation;
 	}
 
 }

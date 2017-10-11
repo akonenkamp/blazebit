@@ -16,12 +16,16 @@ public class Trail {
 	
 	@Column (unique = true, nullable = false)
 	private String name;
+	private double distance;
+	private long elevation;
 	
 	public Trail() {}
 	
-	
-	public Trail(String name) {
+
+	public Trail(String name, double distance, long elevation) {
 		this.name = name;
+		this.distance = distance;
+		this.elevation = elevation;
 	}
 
 	public Long getId() {
@@ -40,6 +44,26 @@ public class Trail {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+
+	public double getDistance() {
+		return distance;
+	}
+
+
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
+
+
+	public long getElevation() {
+		return elevation;
+	}
+
+
+	public void setElevation(long elevation) {
+		this.elevation = elevation;
 	}
 	
 

@@ -1,6 +1,5 @@
 package com.libertymutual.goforcode.blazebit.controllers;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -8,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.libertymutual.goforcode.blazebit.models.User;
-import com.libertymutual.goforcode.blazebit.repositories.UserRepository;
 import com.libertymutual.goforcode.blazebit.services.UserService;
 
 @RestController
@@ -26,5 +24,6 @@ public class UserApiController {
 	public User registerUser(@RequestBody User user) {
 		return userService.signupAndLogin(user.getUsername(), user.getPassword(), SecurityContextHolder.getContext());
 	}
+	
 
 }
