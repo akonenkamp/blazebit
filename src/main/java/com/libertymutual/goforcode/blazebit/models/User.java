@@ -38,6 +38,7 @@ public class User implements UserDetails {
 
 	private Double totalDistance;
 	private Long totalElevation;
+	private Integer totalHikes;
 	
 
 	public User() {
@@ -133,6 +134,14 @@ public class User implements UserDetails {
 
 	public void setTotalElevation(Long totalElevation) {
 		this.totalElevation = totalElevation;
+	}
+
+	public Integer getTotalHikes() {
+		return totalHikes;
+	}
+
+	public void setTotalHikes(Integer totalHikes) {
+		this.totalHikes = totalHikes;
 	}
 
 }

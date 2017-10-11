@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.libertymutual.goforcode.blazebit.models.User;
+import com.libertymutual.goforcode.blazebit.repositories.UserRepository;
+
 
 @RestController
 
@@ -26,13 +29,16 @@ public class SessionApiController {
 
 	private UserDetailsService userDetails;
 	private AuthenticationManager authenticator;
-	public SessionApiController (UserDetailsService userDetails, AuthenticationManager authenticator) {
+	private UserRepository userRepo;
+	
+	public SessionApiController (UserDetailsService userDetails, AuthenticationManager authenticator, UserRepository userRepo) {
 		this.userDetails = userDetails;
 		this.authenticator = authenticator;
+		this.userRepo = userRepo;
 	}
 
 	@PutMapping("/mine")
-	public Boolean login(@RequestBody Credentials credentials) {
+	public User login(@RequestBody Credentials credentials) {
 		UserDetails details = userDetails.loadUserByUsername(credentials.getUsername());
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(details,
 				credentials.password, details.getAuthorities());
@@ -40,9 +46,11 @@ public class SessionApiController {
 		
 		if (token.isAuthenticated()) {
 			SecurityContextHolder.getContext().setAuthentication(token);
+			System.out.println("luka wants this with a space: " + credentials.getUsername());
+			return userRepo.findByUsername(credentials.getUsername());
 		}
 
-		return token.isAuthenticated();
+		return null;
 	}
 
 	@DeleteMapping("/mine")
