@@ -1,6 +1,8 @@
 package com.libertymutual.goforcode.blazebit.models;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,20 +27,26 @@ public class User implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 
-	
 	@Column(unique = true, nullable = false)
 	private String username;
 
-	
 	@Transient
 	private String password;
 	
 	@JsonProperty (access = Access.WRITE_ONLY)
 	private String encryptedPassword;
-
+	
 	private Double totalDistance;
+	
 	private Long totalElevation;
+	
 	private Integer totalHikes;
+	
+	@Transient 
+	private List<UserTrail> completedHikes;
+	
+	@Transient 
+	private List<UserTrail> wishlistHikes;
 	
 
 	public User() {
@@ -50,6 +58,8 @@ public class User implements UserDetails {
 		this.username = user.username;
 		this.encryptedPassword = user.encryptedPassword;
 		this.password = user.password;
+		this.completedHikes = new ArrayList<UserTrail>();
+		this.wishlistHikes = new ArrayList<UserTrail>();
 		
 	}
 
@@ -59,6 +69,19 @@ public class User implements UserDetails {
 		
 	}
 
+	public void addTrail(UserTrail trail) {
+		if (trail.isCompleted()) {
+			completedHikes.add(trail);
+			this.setCompletedHikes(completedHikes);
+			this.totalDistance += trail.getTrail().getDistance();
+			this.totalElevation += trail.getTrail().getElevation();
+			this.totalHikes += 1;
+		} else {
+			wishlistHikes.add(trail);
+			this.setWishlistHikes(wishlistHikes);
+		}
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -142,6 +165,30 @@ public class User implements UserDetails {
 
 	public void setTotalHikes(Integer totalHikes) {
 		this.totalHikes = totalHikes;
+	}
+
+	public Double getTotalDistance() {
+		return totalDistance;
+	}
+
+	public void setTotalDistance(Double totalDistance) {
+		this.totalDistance = totalDistance;
+	}
+
+	public List<UserTrail> getCompletedHikes() {
+		return completedHikes;
+	}
+
+	public void setCompletedHikes(List<UserTrail> completedHikes) {
+		this.completedHikes = completedHikes;
+	}
+
+	public List<UserTrail> getWishlistHikes() {
+		return wishlistHikes;
+	}
+
+	public void setWishlistHikes(List<UserTrail> wishlistHikes) {
+		this.wishlistHikes = wishlistHikes;
 	}
 
 }

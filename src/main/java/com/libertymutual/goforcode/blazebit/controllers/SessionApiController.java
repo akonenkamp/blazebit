@@ -39,6 +39,7 @@ public class SessionApiController {
 
 	@PutMapping("/mine")
 	public User login(@RequestBody Credentials credentials) {
+		
 		UserDetails details = userDetails.loadUserByUsername(credentials.getUsername());
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(details,
 				credentials.password, details.getAuthorities());
@@ -46,7 +47,6 @@ public class SessionApiController {
 		
 		if (token.isAuthenticated()) {
 			SecurityContextHolder.getContext().setAuthentication(token);
-			System.out.println("luka wants this with a space: " + credentials.getUsername());
 			return userRepo.findByUsername(credentials.getUsername());
 		}
 

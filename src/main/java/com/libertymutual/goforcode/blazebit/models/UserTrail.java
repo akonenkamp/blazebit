@@ -1,6 +1,7 @@
 package com.libertymutual.goforcode.blazebit.models;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,6 +23,10 @@ public class UserTrail implements Serializable {
 	
 	@ManyToOne 
 	private Trail trail;
+	
+	private boolean isCompleted;
+	private String dateCompleted;
+	
 	
 	public UserTrail () {} 
 	
@@ -47,6 +52,22 @@ public class UserTrail implements Serializable {
 	
 	public void setTrail (Trail trail) {
 		this.trail=trail;
+	}
+
+	public boolean isCompleted() {
+		return isCompleted;
+	}
+
+	public void setCompleted(boolean isCompleted) {
+		this.isCompleted = isCompleted;
+	}
+
+	public String getDateCompleted() {
+		return dateCompleted;
+	}
+
+	public void setDateCompleted(String dateCompleted) {
+		this.dateCompleted = dateCompleted;
 	}
 	
 
