@@ -27,12 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		this.users = users;
 	}
 
-
-
-
-
 	@Override
-
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.authorizeRequests()
@@ -57,12 +52,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				}
 
 	@Autowired
-
 	public void configureGlobalSecurity(AuthenticationManagerBuilder builder) throws Exception {
 		builder
 		.userDetailsService(users)
 		.passwordEncoder(passwordEncoder());
-
 	}
 
 	@Bean

@@ -25,9 +25,7 @@ public class TrailApiController {
 	}
 	
 	@GetMapping ("") 
-	public List<Trail> getAll(@RequestBody Credentials credentials) {
-		User user = userRepo.findByUsername(credentials.getUsername());
-		System.out.print("user: " + user.getUsername());
+	public List<Trail> getAll() {
 		return trailRepo.findAll();
 	}
 	

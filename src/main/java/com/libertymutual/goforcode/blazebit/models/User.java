@@ -36,17 +36,17 @@ public class User implements UserDetails {
 	@JsonProperty (access = Access.WRITE_ONLY)
 	private String encryptedPassword;
 	
-	private Double totalDistance;
+	private Double totalDistance = 0d;
 	
-	private Long totalElevation;
+	private Long totalElevation = 0l;
 	
-	private Integer totalHikes;
-	
-	@Transient 
-	private List<UserTrail> completedHikes;
+	private Integer totalTrails = 0;
 	
 	@Transient 
-	private List<UserTrail> wishlistHikes;
+	private List<Trail> completedTrails;
+	
+	@Transient 
+	private List<Trail> wishlistTrails;
 	
 
 	public User() {
@@ -58,8 +58,8 @@ public class User implements UserDetails {
 		this.username = user.username;
 		this.encryptedPassword = user.encryptedPassword;
 		this.password = user.password;
-		this.completedHikes = new ArrayList<UserTrail>();
-		this.wishlistHikes = new ArrayList<UserTrail>();
+		this.completedTrails = new ArrayList<Trail>();
+		this.wishlistTrails = new ArrayList<Trail>();
 		
 	}
 
@@ -69,18 +69,29 @@ public class User implements UserDetails {
 		
 	}
 
-	public void addTrail(UserTrail trail) {
-		if (trail.isCompleted()) {
-			completedHikes.add(trail);
-			this.setCompletedHikes(completedHikes);
-			this.totalDistance += trail.getTrail().getDistance();
-			this.totalElevation += trail.getTrail().getElevation();
-			this.totalHikes += 1;
-		} else {
-			wishlistHikes.add(trail);
-			this.setWishlistHikes(wishlistHikes);
-		}
+	public void addCompleted(Trail trail) {
+		this.totalDistance += trail.getDistance();
+		this.totalElevation += trail.getElevation();
+		this.totalTrails += 1;
 	}
+//	public void addTrail(UserTrail trail) {
+//		if (this.completedHikes == null ) {
+//			this.completedHikes = new ArrayList<Trail>();
+//		}
+//		if (this.wishlistHikes == null) {
+//			this.wishlistHikes = new ArrayList<Trail>();
+//		}
+//		if (trail.isCompleted()) {
+//			completedHikes.add(trail.getTrail());
+//			this.setCompletedHikes(completedHikes);
+//			this.totalDistance += trail.getTrail().getDistance();
+//			this.totalElevation += trail.getTrail().getElevation();
+//			this.totalHikes += 1;
+//		} else {
+//			wishlistHikes.add(trail.getTrail());
+//			this.setWishlistHikes(wishlistHikes);
+//		}
+//	}
 	
 	public Long getId() {
 		return id;
@@ -159,12 +170,12 @@ public class User implements UserDetails {
 		this.totalElevation = totalElevation;
 	}
 
-	public Integer getTotalHikes() {
-		return totalHikes;
+	public Integer getTotalTrails() {
+		return totalTrails;
 	}
 
-	public void setTotalHikes(Integer totalHikes) {
-		this.totalHikes = totalHikes;
+	public void setTotalTrails(Integer totalTrails) {
+		this.totalTrails = totalTrails;
 	}
 
 	public Double getTotalDistance() {
@@ -175,20 +186,20 @@ public class User implements UserDetails {
 		this.totalDistance = totalDistance;
 	}
 
-	public List<UserTrail> getCompletedHikes() {
-		return completedHikes;
+	public List<Trail> getCompletedTrails() {
+		return completedTrails;
 	}
 
-	public void setCompletedHikes(List<UserTrail> completedHikes) {
-		this.completedHikes = completedHikes;
+	public void setCompletedTrails(List<Trail> completedTrails) {
+		this.completedTrails = completedTrails;
 	}
 
-	public List<UserTrail> getWishlistHikes() {
-		return wishlistHikes;
+	public List<Trail> getWishlistTrails() {
+		return wishlistTrails;
 	}
 
-	public void setWishlistHikes(List<UserTrail> wishlistHikes) {
-		this.wishlistHikes = wishlistHikes;
+	public void setWishlistTrails(List<Trail> wishlistTrails) {
+		this.wishlistTrails = wishlistTrails;
 	}
 
 }

@@ -1,12 +1,23 @@
 package com.libertymutual.goforcode.blazebit.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.libertymutual.goforcode.blazebit.controllers.SessionApiController.Credentials;
+import com.libertymutual.goforcode.blazebit.models.Trail;
 import com.libertymutual.goforcode.blazebit.models.User;
+import com.libertymutual.goforcode.blazebit.models.UserTrail;
+import com.libertymutual.goforcode.blazebit.repositories.TrailRepository;
+import com.libertymutual.goforcode.blazebit.repositories.UserRepository;
+import com.libertymutual.goforcode.blazebit.repositories.UserTrailRepository;
 import com.libertymutual.goforcode.blazebit.services.UserService;
 
 @RestController
@@ -15,9 +26,15 @@ import com.libertymutual.goforcode.blazebit.services.UserService;
 public class UserApiController {
 
 	private UserService userService;
-
-	public UserApiController(UserService userService) {
+	private UserRepository userRepo;
+	private TrailRepository trailRepo;
+	private UserTrailRepository userTrailRepo;
+	
+	public UserApiController(UserService userService, UserRepository userRepo, TrailRepository trailRepo, UserTrailRepository userTrailRepo) {
 		this.userService = userService;
+		this.userRepo = userRepo;
+		this.trailRepo = trailRepo;
+		this.userTrailRepo = userTrailRepo;
 	}
 
 	@PostMapping("/new")
@@ -25,5 +42,21 @@ public class UserApiController {
 		return userService.signupAndLogin(user.getUsername(), user.getPassword(), SecurityContextHolder.getContext());
 	}
 	
+	@PutMapping("/trails/{trail_id}/add/completed")
+	public User addCompletedTrail(@RequestBody Credentials credentials, @PathVariable long trail_id) {
+		User user = userRepo.findByUsername(credentials.getUsername());
+		Trail theTrail = trailRepo.findOne(trail_id);
+		UserTrail userTrail = new UserTrail(user, theTrail);
+		userTrail.setCompleted(true);
+		userTrail = userTrailRepo.save(userTrail);		
+		List<UserTrail> userTrails = userTrailRepo.findByUserId(user.getId());
+		List<Trail> trails = new ArrayList<Trail>();
+		for (UserTrail u : userTrails) {
+			trails.add(u.getTrail());
+		}
+		user.addCompleted(userTrailRepo.save(userTrail).getTrail());
+		user.setCompletedTrails(trails);
+		return userRepo.save(user);
+	}
 
 }

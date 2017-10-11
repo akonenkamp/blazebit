@@ -30,6 +30,10 @@ public class UserTrail implements Serializable {
 	
 	public UserTrail () {} 
 	
+	public UserTrail(User user, Trail trail) {
+		this.setUser(user);
+		this.setTrail(trail);
+	}
 	public Long getId () {
 		return this.id;
 	}
