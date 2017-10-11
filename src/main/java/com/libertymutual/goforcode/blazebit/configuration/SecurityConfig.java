@@ -51,8 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				.addFilterAfter(new CsrfIntoCookieFilter(), CsrfFilter.class)
 			// remove the .disable() and then uncomment the csrfTokenRepository line to implement csrf checking
-				.csrf()
-				.csrfTokenRepository(tokenRepository());
+				.csrf().disable();
+//				.csrfTokenRepository(tokenRepository());
 				
 				}
 
