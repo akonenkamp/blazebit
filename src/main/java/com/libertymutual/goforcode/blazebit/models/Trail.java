@@ -18,14 +18,18 @@ public class Trail {
 	private String name;
 	private double distance;
 	private long elevation;
+	private Double lattitude;
+	private Double longitude;
 	
 	public Trail() {}
 	
 
-	public Trail(String name, double distance, long elevation) {
+	public Trail(String name, double distance, long elevation, double lattitude, double longitude) {
 		this.name = name;
 		this.distance = distance;
 		this.elevation = elevation;
+		this.lattitude = lattitude;
+		this.longitude = longitude;
 	}
 
 	public Long getId() {
@@ -64,6 +68,26 @@ public class Trail {
 
 	public void setElevation(long elevation) {
 		this.elevation = elevation;
+	}
+
+
+	public Double getLattitude() {
+		return lattitude;
+	}
+
+
+	public void setLattitude(Double lattitude) {
+		this.lattitude = lattitude;
+	}
+
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
 	}
 	
 
