@@ -14,4 +14,8 @@ public interface UserTrailRepository extends JpaRepository<UserTrail, Long>{
 	List<UserTrail> findByUserId(long id);
 	
 	List<UserTrail> findByUserIdAndTrailIdAndIsCompleted (long userId, long trailId, boolean isComplete);
+	
+	UserTrail findFirstByUserIdAndTrailIdAndIsCompleted (long userId, long trailId, boolean isComplete);
+
 }
+

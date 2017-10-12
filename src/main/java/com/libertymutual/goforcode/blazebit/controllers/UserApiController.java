@@ -3,7 +3,9 @@ package com.libertymutual.goforcode.blazebit.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -68,4 +70,17 @@ public class UserApiController {
 		return userRepo.save(user);
 	}
 
+	@DeleteMapping("/trails/{trail_id}/remove/wishlist")
+	public User removeWishlistTrail (@RequestBody Credentials credentials, @PathVariable long trail_id) {
+		User user = userRepo.findByUsername(credentials.getUsername());
+		try {
+		UserTrail userTrail = userTrailRepo.findFirstByUserIdAndTrailIdAndIsCompleted(user.getId(), trail_id, false);
+			userTrailRepo.delete(userTrail);
+		} catch (InvalidDataAccessApiUsageException ida) {
+			System.out.println("error: " + ida.getClass().getName());
+		}
+		List<UserTrail> userTrails = userTrailRepo.findByUserId(user.getId());
+		user.refreshTrails(userTrails);
+		return userRepo.save(user);
+	}
 }
