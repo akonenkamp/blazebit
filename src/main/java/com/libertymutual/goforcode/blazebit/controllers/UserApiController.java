@@ -3,6 +3,9 @@ package com.libertymutual.goforcode.blazebit.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,8 +43,13 @@ public class UserApiController {
 	}
 
 	@PostMapping("/new")
-	public User registerUser(@RequestBody User user) {
+	public User registerUser(@RequestBody User user, HttpServletResponse response) {
+		try {
 		return userService.signupAndLogin(user.getUsername(), user.getPassword(), SecurityContextHolder.getContext());
+		} catch (DataIntegrityViolationException diva) {
+			response.setStatus(HttpServletResponse.SC_CONFLICT);
+		}
+		return null;
 	}
 	
 	@PutMapping("/trails/{trail_id}/add/completed")
@@ -71,13 +79,13 @@ public class UserApiController {
 	}
 
 	@DeleteMapping("/trails/{trail_id}/remove/wishlist")
-	public User removeWishlistTrail (@RequestBody Credentials credentials, @PathVariable long trail_id) {
+	public User removeWishlistTrail (@RequestBody Credentials credentials, @PathVariable long trail_id, HttpServletResponse response) {
 		User user = userRepo.findByUsername(credentials.getUsername());
 		try {
 		UserTrail userTrail = userTrailRepo.findFirstByUserIdAndTrailIdAndIsCompleted(user.getId(), trail_id, false);
 			userTrailRepo.delete(userTrail);
 		} catch (InvalidDataAccessApiUsageException ida) {
-			System.out.println("error: " + ida.getClass().getName());
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
 		List<UserTrail> userTrails = userTrailRepo.findByUserId(user.getId());
 		user.refreshTrails(userTrails);
