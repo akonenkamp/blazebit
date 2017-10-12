@@ -12,4 +12,6 @@ import com.libertymutual.goforcode.blazebit.models.UserTrail;
 public interface UserTrailRepository extends JpaRepository<UserTrail, Long>{
 
 	List<UserTrail> findByUserId(long id);
+	
+	List<UserTrail> findByUserIdAndTrailIdAndIsCompleted (long userId, long trailId, boolean isComplete);
 }

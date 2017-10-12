@@ -1,5 +1,7 @@
 package com.libertymutual.goforcode.blazebit.controllers;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.libertymutual.goforcode.blazebit.models.User;
+import com.libertymutual.goforcode.blazebit.models.UserTrail;
 import com.libertymutual.goforcode.blazebit.repositories.UserRepository;
+import com.libertymutual.goforcode.blazebit.repositories.UserTrailRepository;
 
 
 @RestController
@@ -30,11 +34,13 @@ public class SessionApiController {
 	private UserDetailsService userDetails;
 	private AuthenticationManager authenticator;
 	private UserRepository userRepo;
+	private UserTrailRepository userTrailRepo;
 	
-	public SessionApiController (UserDetailsService userDetails, AuthenticationManager authenticator, UserRepository userRepo) {
+	public SessionApiController (UserDetailsService userDetails, AuthenticationManager authenticator, UserRepository userRepo, UserTrailRepository userTrailRepo) {
 		this.userDetails = userDetails;
 		this.authenticator = authenticator;
 		this.userRepo = userRepo;
+		this.userTrailRepo = userTrailRepo;
 	}
 
 	@PutMapping("/mine")
@@ -47,7 +53,10 @@ public class SessionApiController {
 		
 		if (token.isAuthenticated()) {
 			SecurityContextHolder.getContext().setAuthentication(token);
-			return userRepo.findByUsername(credentials.getUsername());
+			User user = userRepo.findByUsername(credentials.getUsername());
+			List<UserTrail> userTrail = userTrailRepo.findByUserId(user.getId());
+			user.refreshTrails(userTrail);
+			return user;
 		}
 
 		return null;

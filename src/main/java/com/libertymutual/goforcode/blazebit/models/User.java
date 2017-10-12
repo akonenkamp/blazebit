@@ -68,30 +68,27 @@ public class User implements UserDetails {
 		this.encryptedPassword = encryptedPassword;
 		
 	}
+	
+	public void refreshTrails(List<UserTrail> userTrails) {
+		List<Trail> complete = new ArrayList<Trail>();
+		List<Trail> wishlist = new ArrayList<Trail>();
+		for (UserTrail u : userTrails) {
+			if (u.isCompleted()) {
+				complete.add(u.getTrail());
+			} else {
+				wishlist.add(u.getTrail());
+			}
+		}
+		this.setCompletedTrails(complete);
+		this.setWishlistTrails(wishlist);
+		
+	}
 
-	public void addCompleted(Trail trail) {
+	public void updateStats(Trail trail) {
 		this.totalDistance += trail.getDistance();
 		this.totalElevation += trail.getElevation();
 		this.totalTrails += 1;
 	}
-//	public void addTrail(UserTrail trail) {
-//		if (this.completedHikes == null ) {
-//			this.completedHikes = new ArrayList<Trail>();
-//		}
-//		if (this.wishlistHikes == null) {
-//			this.wishlistHikes = new ArrayList<Trail>();
-//		}
-//		if (trail.isCompleted()) {
-//			completedHikes.add(trail.getTrail());
-//			this.setCompletedHikes(completedHikes);
-//			this.totalDistance += trail.getTrail().getDistance();
-//			this.totalElevation += trail.getTrail().getElevation();
-//			this.totalHikes += 1;
-//		} else {
-//			wishlistHikes.add(trail.getTrail());
-//			this.setWishlistHikes(wishlistHikes);
-//		}
-//	}
 	
 	public Long getId() {
 		return id;

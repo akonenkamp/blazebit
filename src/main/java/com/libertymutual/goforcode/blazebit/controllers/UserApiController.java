@@ -50,12 +50,21 @@ public class UserApiController {
 		userTrail.setCompleted(true);
 		userTrail = userTrailRepo.save(userTrail);		
 		List<UserTrail> userTrails = userTrailRepo.findByUserId(user.getId());
-		List<Trail> trails = new ArrayList<Trail>();
-		for (UserTrail u : userTrails) {
-			trails.add(u.getTrail());
+		user.refreshTrails(userTrails);
+		user.updateStats(userTrailRepo.save(userTrail).getTrail());
+		return userRepo.save(user);
+	}
+
+	@PutMapping("/trails/{trail_id}/add/wishlist")
+	public User addWishlistTrail(@RequestBody Credentials credentials, @PathVariable long trail_id) {
+		User user = userRepo.findByUsername(credentials.getUsername());
+		if (userTrailRepo.findByUserIdAndTrailIdAndIsCompleted(user.getId(), trail_id, false).size() == 0) {
+			Trail theTrail = trailRepo.findOne(trail_id);
+			UserTrail userTrail = new UserTrail(user, theTrail);
+			userTrail = userTrailRepo.save(userTrail);
 		}
-		user.addCompleted(userTrailRepo.save(userTrail).getTrail());
-		user.setCompletedTrails(trails);
+		List<UserTrail> userTrails = userTrailRepo.findByUserId(user.getId());
+		user.refreshTrails(userTrails);
 		return userRepo.save(user);
 	}
 
