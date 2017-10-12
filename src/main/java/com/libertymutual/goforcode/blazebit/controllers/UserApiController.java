@@ -59,6 +59,10 @@ public class UserApiController {
 		UserTrail userTrail = new UserTrail(user, theTrail);
 		userTrail.setCompleted(true);
 		userTrail = userTrailRepo.save(userTrail);		
+		UserTrail trailInWishListNowCompleted = userTrailRepo.findFirstByUserIdAndTrailIdAndIsCompleted(user.getId(), trail_id, false);
+		if (trailInWishListNowCompleted != null) {
+			userTrailRepo.delete(trailInWishListNowCompleted);
+		} 
 		List<UserTrail> userTrails = userTrailRepo.findByUserId(user.getId());
 		user.refreshTrails(userTrails);
 		user.updateStats(userTrailRepo.save(userTrail).getTrail());
