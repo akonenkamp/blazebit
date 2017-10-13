@@ -1,6 +1,5 @@
 package com.libertymutual.goforcode.blazebit.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;

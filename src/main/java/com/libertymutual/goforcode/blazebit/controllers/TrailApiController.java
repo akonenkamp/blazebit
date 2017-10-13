@@ -5,13 +5,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.libertymutual.goforcode.blazebit.controllers.SessionApiController.Credentials;
 import com.libertymutual.goforcode.blazebit.models.Trail;
-import com.libertymutual.goforcode.blazebit.models.User;
 import com.libertymutual.goforcode.blazebit.repositories.TrailRepository;
 import com.libertymutual.goforcode.blazebit.repositories.UserRepository;
 
