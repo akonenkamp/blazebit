@@ -52,6 +52,7 @@ public class SessionApiController {
 		authenticator.authenticate(token);
 		
 		if (token.isAuthenticated()) {
+			//TODO add catch for if our login password is wrong
 			SecurityContextHolder.getContext().setAuthentication(token);
 			User user = userRepo.findByUsername(credentials.getUsername());
 			List<UserTrail> userTrail = userTrailRepo.findByUserId(user.getId());
