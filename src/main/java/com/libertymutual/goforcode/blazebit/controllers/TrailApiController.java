@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.libertymutual.goforcode.blazebit.models.Trail;
 import com.libertymutual.goforcode.blazebit.repositories.TrailRepository;
-import com.libertymutual.goforcode.blazebit.repositories.UserRepository;
 
 @RestController 
 @RequestMapping("/api/trails")

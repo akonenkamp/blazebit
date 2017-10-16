@@ -1,8 +1,6 @@
 package com.libertymutual.goforcode.blazebit.models;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,7 +9,7 @@ import org.junit.Test;
 import org.meanbean.test.BeanTester;
 import org.springframework.security.core.GrantedAuthority;
 
-public class UsersTest {
+public class UsersTests {
 	
 	private User user;
 	
@@ -32,6 +30,11 @@ public class UsersTest {
 
 		assertThat(actual).hasSize(1);
 		assertThat(actual.get(0).getAuthority()).isEqualTo("USER");
+	}
+	
+	@Test
+	public void test_refresh_trail() {
+		
 	}
 	
 	
