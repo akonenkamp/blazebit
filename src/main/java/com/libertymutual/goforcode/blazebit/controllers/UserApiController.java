@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,13 +53,15 @@ public class UserApiController {
 	}
 	
 	@PutMapping("/trails/{trail_id}/add/completed")
-	public User addCompletedTrail(@RequestBody Credentials credentials, @PathVariable long trail_id) {
-		User user = userRepo.findByUsername(credentials.getUsername());
+	public User addCompletedTrail(Authentication auth, @PathVariable long trail_id) {
+		User user = (User) auth.getPrincipal();
+		user = userRepo.findByUsername(user.getUsername());
 		Trail theTrail = trailRepo.findOne(trail_id);
 		UserTrail userTrail = new UserTrail(user, theTrail);
 		userTrail.setCompleted(true);
-		userTrail = userTrailRepo.save(userTrail);		
+		userTrail = userTrailRepo.save(userTrail);	
 		UserTrail trailInWishListNowCompleted = userTrailRepo.findFirstByUserIdAndTrailIdAndIsCompleted(user.getId(), trail_id, false);
+
 		if (trailInWishListNowCompleted != null) {
 			userTrailRepo.delete(trailInWishListNowCompleted);
 		} 
@@ -67,7 +70,7 @@ public class UserApiController {
 		user.updateStats(userTrailRepo.save(userTrail).getTrail());
 		return userRepo.save(user);
 	}
-
+	
 	@PutMapping("/trails/{trail_id}/add/wishlist")
 	public User addWishlistTrail(@RequestBody Credentials credentials, @PathVariable long trail_id) {
 		User user = userRepo.findByUsername(credentials.getUsername());
@@ -76,7 +79,7 @@ public class UserApiController {
 			UserTrail userTrail = new UserTrail(user, theTrail);
 			userTrail = userTrailRepo.save(userTrail);
 		}
-		List<UserTrail> userTrails = userTrailRepo.findByUserId(user.getId());
+		List<UserTrail> userTrails = userTrailRepo.findByUserId(user.getId()); 
 		user.refreshTrails(userTrails);
 		return userRepo.save(user);
 	}
