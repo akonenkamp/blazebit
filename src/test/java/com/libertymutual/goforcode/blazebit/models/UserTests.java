@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.meanbean.test.BeanTester;
 import org.springframework.security.core.GrantedAuthority;
 
-public class UsersTests {
+public class UserTests {
 	
 	private User user;
 	
