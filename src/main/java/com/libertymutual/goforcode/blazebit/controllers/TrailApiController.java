@@ -17,9 +17,9 @@ import com.libertymutual.goforcode.blazebit.repositories.UserRepository;
 public class TrailApiController {
 	
 	private TrailRepository trailRepo;
-	private UserRepository userRepo;
+
 	
-	public TrailApiController (TrailRepository trailRepo, UserRepository userRepo) {
+	public TrailApiController (TrailRepository trailRepo) {
 		this.trailRepo = trailRepo;
 	}
 	
