@@ -61,4 +61,15 @@ public class TrailApiControllerTests {
 		assertThat(test).isEqualTo(null);
 		verify(response).setStatus(403);
 	}
+	
+	@Test
+	public void test_getOne_returns_selected_trail() {
+	    Trail trail = new Trail();
+	    when(trailRepo.findOne(10l)).thenReturn(trail);
+	    
+	    Trail actualTrail = trailApiController.getOne(10l);
+	    
+	    assertThat(trail).isEqualTo(actualTrail);
+	    verify(trailRepo).findOne(10l);
+	}
 }
