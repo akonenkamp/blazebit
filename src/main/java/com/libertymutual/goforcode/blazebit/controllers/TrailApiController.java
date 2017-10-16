@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,8 +33,13 @@ public class TrailApiController {
         }
 
         return trails;
-
     }
+	
+	@GetMapping("{id}")
+	public Trail getOne(@PathVariable long id) {
+		Trail trail = trailRepo.findOne(id);
+		return trail;
+	}
 	
 	@GetMapping ("fail")
 	public String fail(HttpServletResponse response) {

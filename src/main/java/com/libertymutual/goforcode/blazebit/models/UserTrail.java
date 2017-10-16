@@ -24,9 +24,7 @@ public class UserTrail implements Serializable {
 	@ManyToOne 
 	private Trail trail;
 	
-	private boolean isCompleted;
-	private String dateCompleted;
-	
+	private boolean isCompleted;	
 	
 	public UserTrail () {} 
 	
@@ -65,14 +63,4 @@ public class UserTrail implements Serializable {
 	public void setCompleted(boolean isCompleted) {
 		this.isCompleted = isCompleted;
 	}
-
-	public String getDateCompleted() {
-		return dateCompleted;
-	}
-
-	public void setDateCompleted(String dateCompleted) {
-		this.dateCompleted = dateCompleted;
-	}
-	
-
 }

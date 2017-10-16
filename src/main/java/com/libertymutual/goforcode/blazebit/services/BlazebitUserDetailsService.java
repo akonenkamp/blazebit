@@ -16,6 +16,7 @@ public class BlazebitUserDetailsService implements UserDetailsService {
 	public BlazebitUserDetailsService (UserRepository userRepo) {
 		this.userRepo = userRepo;
 	}
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepo.findByUsername(username);
