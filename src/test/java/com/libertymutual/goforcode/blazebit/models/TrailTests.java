@@ -7,7 +7,7 @@ public class TrailTests {
 
 	@Test
 	public void test_getters_and_setters() {
-		new BeanTester().testBean(User.class);
+		new BeanTester().testBean(Trail.class);
 	}
 	
 	

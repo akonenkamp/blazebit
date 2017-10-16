@@ -36,8 +36,6 @@ public class Trail {
 		return id;
 	}
 	
-
-
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -50,31 +48,25 @@ public class Trail {
 		this.name = name;
 	}
 
-
 	public double getDistance() {
 		return distance;
 	}
-
 
 	public void setDistance(double distance) {
 		this.distance = distance;
 	}
 
-
 	public long getElevation() {
 		return elevation;
 	}
-
 
 	public void setElevation(long elevation) {
 		this.elevation = elevation;
 	}
 
-
 	public Double getLattitude() {
 		return lattitude;
 	}
-
 
 	public void setLattitude(Double lattitude) {
 		this.lattitude = lattitude;
