@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.authorizeRequests()
-				.antMatchers(HttpMethod.GET, "/api/ping", "/api/trails").permitAll()
+				.antMatchers(HttpMethod.GET, "/api/ping", "/api/trails/**").permitAll()
 				.antMatchers(HttpMethod.POST, "/api/users/new").permitAll()
 				.antMatchers(HttpMethod.PUT, "/api/session/mine").permitAll()	
 				.antMatchers(HttpMethod.OPTIONS).permitAll()
