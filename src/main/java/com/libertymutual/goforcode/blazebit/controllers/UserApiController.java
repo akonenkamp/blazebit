@@ -72,8 +72,9 @@ public class UserApiController {
 	}
 	
 	@PutMapping("/trails/{trail_id}/add/wishlist")
-	public User addWishlistTrail(@RequestBody Credentials credentials, @PathVariable long trail_id) {
-		User user = userRepo.findByUsername(credentials.getUsername());
+	public User addWishlistTrail(Authentication auth, @PathVariable long trail_id) {
+		User user = (User) auth.getPrincipal();
+		user = userRepo.findByUsername(user.getUsername());
 		if (userTrailRepo.findByUserIdAndTrailIdAndIsCompleted(user.getId(), trail_id, false).size() == 0) {
 			Trail theTrail = trailRepo.findOne(trail_id);
 			UserTrail userTrail = new UserTrail(user, theTrail);
@@ -85,8 +86,9 @@ public class UserApiController {
 	}
 
 	@DeleteMapping("/trails/{trail_id}/remove/wishlist")
-	public User removeWishlistTrail (@RequestBody Credentials credentials, @PathVariable long trail_id, HttpServletResponse response) {
-		User user = userRepo.findByUsername(credentials.getUsername());
+	public User removeWishlistTrail (Authentication auth, @PathVariable long trail_id, HttpServletResponse response) {
+		User user = (User) auth.getPrincipal();
+		user = userRepo.findByUsername(user.getUsername());
 		try {
 		UserTrail userTrail = userTrailRepo.findFirstByUserIdAndTrailIdAndIsCompleted(user.getId(), trail_id, false);
 			userTrailRepo.delete(userTrail);

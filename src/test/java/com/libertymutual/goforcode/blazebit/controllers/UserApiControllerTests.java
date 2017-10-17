@@ -11,6 +11,8 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 
 import com.libertymutual.goforcode.blazebit.controllers.SessionApiController.Credentials;
 import com.libertymutual.goforcode.blazebit.models.Trail;
@@ -28,12 +30,14 @@ public class UserApiControllerTests {
 	private TrailRepository trailRepo;
 	private UserTrailRepository userTrailRepo;
 	private UserService userService;
+	private Authentication auth;
 
 	@Before
 	public void setUp() {
 		userRepo = mock(UserRepository.class);
 		trailRepo = mock(TrailRepository.class);
 		userTrailRepo = mock(UserTrailRepository.class);
+		auth = mock(Authentication.class);
 		controller = new UserApiController(userService, userRepo, trailRepo, userTrailRepo);
 		
 	}
@@ -47,10 +51,9 @@ public class UserApiControllerTests {
 		Trail trail = new Trail();
 		trail.setId(2l);
 		UserTrail userTrail = new UserTrail();
-		Credentials credentials = new Credentials();
 		List<UserTrail> userTrailList = new ArrayList<UserTrail>();
 		
-		when(userRepo.findByUsername(credentials.getUsername())).thenReturn(user);
+		when(userRepo.findByUsername(user.getUsername())).thenReturn(user);
 		when(userTrailRepo.findByUserIdAndTrailIdAndIsCompleted(user.getId(), trail.getId(), false)).thenReturn(userTrailList);
 		when(trailRepo.findOne(trail.getId())).thenReturn(trail);
 		when(userTrailRepo.save(userTrail)).thenReturn(userTrail);
@@ -59,10 +62,10 @@ public class UserApiControllerTests {
 		
 		
 		//act
-		controller.addWishlistTrail(credentials, trail.getId());
+		controller.addWishlistTrail(auth, trail.getId());
 		
 		//assert
-		verify(userRepo).findByUsername(credentials.getUsername());
+		verify(userRepo).findByUsername(user.getUsername());
 		verify(userTrailRepo).findByUserIdAndTrailIdAndIsCompleted(user.getId(), trail.getId(), false);
 		verify(trailRepo).findOne(trail.getId());
 //		assertThat(userTrailRepo.save(userTrail).getClass());
