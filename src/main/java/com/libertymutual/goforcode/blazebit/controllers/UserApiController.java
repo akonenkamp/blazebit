@@ -23,7 +23,9 @@ import com.libertymutual.goforcode.blazebit.models.UserTrail;
 import com.libertymutual.goforcode.blazebit.repositories.TrailRepository;
 import com.libertymutual.goforcode.blazebit.repositories.UserRepository;
 import com.libertymutual.goforcode.blazebit.repositories.UserTrailRepository;
+import com.libertymutual.goforcode.blazebit.services.CompletedTrailService;
 import com.libertymutual.goforcode.blazebit.services.UserService;
+import com.libertymutual.goforcode.blazebit.services.WishlistTrailService;
 
 @RestController
 @RequestMapping("/api/users")
@@ -31,72 +33,47 @@ import com.libertymutual.goforcode.blazebit.services.UserService;
 public class UserApiController {
 
 	private UserService userService;
-	private UserRepository userRepo;
 	private TrailRepository trailRepo;
 	private UserTrailRepository userTrailRepo;
-	
-	public UserApiController(UserService userService, UserRepository userRepo, TrailRepository trailRepo, UserTrailRepository userTrailRepo) {
+	private CompletedTrailService completedService;
+	private WishlistTrailService wishlistService;
+
+	public UserApiController(UserService userService, TrailRepository trailRepo, UserTrailRepository userTrailRepo,
+			CompletedTrailService completedTrailService, WishlistTrailService wishlistService) {
 		this.userService = userService;
-		this.userRepo = userRepo;
 		this.trailRepo = trailRepo;
 		this.userTrailRepo = userTrailRepo;
+		this.completedService = completedTrailService;
+		this.wishlistService = wishlistService;
 	}
 
 	@PostMapping("/new")
 	public User registerUser(@RequestBody User user, HttpServletResponse response) {
 		try {
-		return userService.signupAndLogin(user.getUsername(), user.getPassword(), SecurityContextHolder.getContext());
+			return userService.signupAndLogin(user.getUsername(), user.getPassword(),
+					SecurityContextHolder.getContext());
 		} catch (DataIntegrityViolationException diva) {
 			response.setStatus(HttpServletResponse.SC_CONFLICT);
 		}
 		return null;
 	}
-	
+
 	@PutMapping("/trails/{trail_id}/add/completed")
 	public User addCompletedTrail(Authentication auth, @PathVariable long trail_id) {
 		User user = (User) auth.getPrincipal();
-		user = userRepo.findByUsername(user.getUsername());
-		Trail theTrail = trailRepo.findOne(trail_id);
-		UserTrail userTrail = new UserTrail(user, theTrail);
-		userTrail.setCompleted(true);
-		userTrail = userTrailRepo.save(userTrail);	
-		UserTrail trailInWishListNowCompleted = userTrailRepo.findFirstByUserIdAndTrailIdAndIsCompleted(user.getId(), trail_id, false);
+		return completedService.updateCompletedTrail(user, trail_id);
 
-		if (trailInWishListNowCompleted != null) {
-			userTrailRepo.delete(trailInWishListNowCompleted);
-		} 
-		List<UserTrail> userTrails = userTrailRepo.findByUserId(user.getId());
-		user.refreshTrails(userTrails);
-		user.updateStats(userTrailRepo.save(userTrail).getTrail());
-		return userRepo.save(user);
 	}
-	
+
 	@PutMapping("/trails/{trail_id}/add/wishlist")
 	public User addWishlistTrail(Authentication auth, @PathVariable long trail_id) {
 		User user = (User) auth.getPrincipal();
-		user = userRepo.findByUsername(user.getUsername());
-		if (userTrailRepo.findByUserIdAndTrailIdAndIsCompleted(user.getId(), trail_id, false).size() == 0) {
-			Trail theTrail = trailRepo.findOne(trail_id);
-			UserTrail userTrail = new UserTrail(user, theTrail);
-			userTrail = userTrailRepo.save(userTrail);
-		}
-		List<UserTrail> userTrails = userTrailRepo.findByUserId(user.getId()); 
-		user.refreshTrails(userTrails);
-		return userRepo.save(user);
+		return wishlistService.updateWishlist(user, trail_id, false);
 	}
 
 	@DeleteMapping("/trails/{trail_id}/remove/wishlist")
-	public User removeWishlistTrail (Authentication auth, @PathVariable long trail_id, HttpServletResponse response) {
+	public User removeWishlistTrail(Authentication auth, @PathVariable long trail_id, HttpServletResponse response) {
 		User user = (User) auth.getPrincipal();
-		user = userRepo.findByUsername(user.getUsername());
-		try {
-		UserTrail userTrail = userTrailRepo.findFirstByUserIdAndTrailIdAndIsCompleted(user.getId(), trail_id, false);
-			userTrailRepo.delete(userTrail);
-		} catch (InvalidDataAccessApiUsageException ida) {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		}
-		List<UserTrail> userTrails = userTrailRepo.findByUserId(user.getId());
-		user.refreshTrails(userTrails);
-		return userRepo.save(user);
+		return wishlistService.updateWishlist(user, trail_id, true);
 	}
 }

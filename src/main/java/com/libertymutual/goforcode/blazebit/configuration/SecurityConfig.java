@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //				.passwordParameter("password")
 //				.loginProcessingUrl("/api/session/mine")
 				.and()
-				.addFilterAfter(new CsrfIntoCookieFilter(), CsrfFilter.class)
+//				.addFilterAfter(new CsrfIntoCookieFilter(), CsrfFilter.class)
 			// remove the .disable() and then uncomment the csrfTokenRepository line to implement csrf checking
 				.csrf().disable();
 //				.csrfTokenRepository(tokenRepository());
