@@ -52,6 +52,8 @@ public class UserApiControllerTests {
 		userTrailRepo = mock(UserTrailRepository.class);
 		auth = mock(Authentication.class);
 		userService = mock(UserService.class);
+		wishlistService = mock(WishlistTrailService.class);
+		completedTrailService = mock(CompletedTrailService.class);
 		controller = new UserApiController(userService, trailRepo, userTrailRepo, completedTrailService, wishlistService);
 
 	}
@@ -161,29 +163,15 @@ public class UserApiControllerTests {
 
 	@Test
 	public void test_that_addCompletedTrail_adds_trail_when_not_in_wishlist() {
-		User user = new User("josh", "password");
-		Trail trail = new Trail("newTrail", 1, 2, 3, 4);
-		UserTrail userTrail = new UserTrail(user, trail);
-		user.setId(1l);
-		trail.setId(1l);
-
+		//arrange
+		trail.setId(2l);
 		when(auth.getPrincipal()).thenReturn(user);
-		when(userRepo.findByUsername("josh")).thenReturn(user);
-		when(trailRepo.findOne(1l)).thenReturn(trail);
-		when(userTrailRepo.save(any(UserTrail.class))).thenReturn(userTrail);
-		when(userTrailRepo.findFirstByUserIdAndTrailIdAndIsCompleted(user.getId(), trail.getId(), false))
-				.thenReturn(null);
-		when(userRepo.save(user)).thenReturn(user);
-
-		User actualUser = controller.addCompletedTrail(auth, 1l);
-
-		assertThat(user).isEqualTo(actualUser);
+		
+		//act
+		controller.addCompletedTrail(auth, 2l);
+		
+		//assert 
 		verify(auth).getPrincipal();
-		verify(userRepo).findByUsername("josh");
-		verify(trailRepo).findOne(1l);
-		verify(userTrailRepo).save(userTrail);
-		verify(userTrailRepo).findFirstByUserIdAndTrailIdAndIsCompleted(user.getId(), trail.getId(), false);
-		verify(userRepo).save(user);
 	}
 	
 	@Test
