@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
@@ -36,18 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.PUT, "/api/session/mine").permitAll()	
 				.antMatchers(HttpMethod.OPTIONS).permitAll()
 				.anyRequest().authenticated()
-//				.and()
-//				.formLogin()
-//				.loginPage("/api/session/mine")
-//				.usernameParameter("username")
-//				.passwordParameter("password")
-//				.loginProcessingUrl("/api/session/mine")
 				.and()
-//				.addFilterAfter(new CsrfIntoCookieFilter(), CsrfFilter.class)
-			// remove the .disable() and then uncomment the csrfTokenRepository line to implement csrf checking
 				.csrf().disable();
-//				.csrfTokenRepository(tokenRepository());
-				
 				}
 
 	@Autowired
