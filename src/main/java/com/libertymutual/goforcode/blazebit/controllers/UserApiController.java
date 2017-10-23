@@ -1,11 +1,8 @@
 package com.libertymutual.goforcode.blazebit.controllers;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,12 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.libertymutual.goforcode.blazebit.controllers.SessionApiController.Credentials;
-import com.libertymutual.goforcode.blazebit.models.Trail;
 import com.libertymutual.goforcode.blazebit.models.User;
-import com.libertymutual.goforcode.blazebit.models.UserTrail;
 import com.libertymutual.goforcode.blazebit.repositories.TrailRepository;
-import com.libertymutual.goforcode.blazebit.repositories.UserRepository;
 import com.libertymutual.goforcode.blazebit.repositories.UserTrailRepository;
 import com.libertymutual.goforcode.blazebit.services.CompletedTrailService;
 import com.libertymutual.goforcode.blazebit.services.UserService;
